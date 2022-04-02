@@ -23,10 +23,6 @@ const bookControllers = {
   getAllBook: async (req, res) => {
     try {
       const allBook = await Book.findAll({ include: Tags });
-
-      // console.log(allBook);
-      // { include: Tags }();
-      // console.log(allBook);
       res.status(200).json({
         message: 'get all Books succsess',
         result: allBook,
@@ -43,7 +39,7 @@ const bookControllers = {
       const { id } = req.params;
       console.log(id);
       const selectedBook = await Book.findByPk(id, {
-        include: Connection,
+        include: Tags,
       });
       console.log(selectedBook);
 

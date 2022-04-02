@@ -13,7 +13,7 @@ const books = () => {
       setBooklist(res.data.result);
       console.log(res.data.result);
     } catch (err) {
-      console.log(res.data.message);
+      console.log(err);
     }
   };
 
@@ -88,7 +88,7 @@ const books = () => {
   }, []);
   return (
     <Stack mt={4} alignItems="center">
-      <HStack width="md">
+      <HStack width="lg">
         <Input name="action" onChange={inputHandler} placeholder="input your activity" />
         <Button width="xm" onClick={() => createBtn()}>
           Create
@@ -97,7 +97,9 @@ const books = () => {
 
       <TableContainer>
         <Table>
-          <TableCaption placement="top">Books Collection</TableCaption>
+          <TableCaption fontSize="lg" fontWeight="bold" placement="top">
+            Books Collection
+          </TableCaption>
           <Thead>
             <Tr>
               <Th>Book Id</Th>

@@ -1,13 +1,25 @@
-import { Button, HStack, Input, Stack, Table, Thead, Tr, Th, TableCaption, TableContainer, CheckboxGroup, Checkbox, Center } from '@chakra-ui/react';
+import { Button, HStack, Input, Stack, Table, Thead, Tr, Th, TableCaption, TableContainer, CheckboxGroup, Checkbox, Center, MenuItemOption } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import Booklist from '../../component/BookList';
 import Taglist from '../../component/Taglist';
 import axiosInstance from '../../lib/api';
+import { useFormik } from 'formik';
 
 const books = () => {
   const [booklist, setBooklist] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [tagList, setTagList] = useState([]);
+  const [inputValueTags, setInputValueTags] = useState([]);
+
+  const formik = useFormik({
+    initialValues: {
+      Tags_id: [],
+    },
+    onSubmit: (values) => {
+      console.log(values);
+      setInputValueTags(values);
+    },
+  });
 
   const fetchBooks = async () => {
     try {
@@ -28,6 +40,8 @@ const books = () => {
       console.log(err);
     }
   };
+
+  //buat cetak data
   const renderList = () => {
     return booklist.map((val) => {
       const tags = val.Tags;
@@ -46,12 +60,14 @@ const books = () => {
           editStatusBtn={() => {
             editStatusHandler(val.id);
           }}
-          renderTags
+          renderTags={renderTags()}
+          addTagsBtn={() => {
+            addTags(val.id, val.Tags);
+          }}
         />
       );
     });
   };
-
   const inputHandler = (event) => {
     const { value, name } = event.target;
 
@@ -92,8 +108,9 @@ const books = () => {
 
   const renderTags = () => {
     return tagList.map((val) => {
+      // console.log(val.id);
       return (
-        <MenuItemOption onChange={inputHandlerTags} closeOnSelect={false} value={val.id}>
+        <MenuItemOption name={val.id} id={val.id} value={formik.values.Tags_id} onChange={formik.handleChange} closeOnSelect={false}>
           {val.tags_name}
         </MenuItemOption>
       );
@@ -104,6 +121,26 @@ const books = () => {
     try {
       const res = await axiosInstance.get('/tags');
       setTagList(res.data.result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // const inputHandlerTags = (event) => {
+  //   const id = event.target.value;
+  //   setInputValueTags(id);
+  // };
+
+  const addTags = async (Book_id) => {
+    try {
+      console.log(Book_id);
+      const newTagsBook = {
+        Book_id: Book_id,
+        Tag_id: inputValueTags,
+      };
+
+      console.log(newTagsBook);
+      const res = await axiosInstance.post(`/connection/${Book_id}`, newTagsBook);
     } catch (err) {
       console.log(err);
     }

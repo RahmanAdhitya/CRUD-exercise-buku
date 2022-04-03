@@ -2,15 +2,15 @@ import { Button, Tbody, Tr, Td, MenuButton, MenuList, Checkbox, Menu, CheckboxGr
 import React, { useEffect, useState } from 'react';
 import axiosInstance from '../lib/api';
 
-const Booklist = ({ Book_Id, title, deleteBtn, editStatusBtn, tags, addTagsBtn, renderTags }) => {
-  const [tagList, setTagList] = useState([]);
-  const [inputValuesTags, setInputValuesTags] = useState([]);
+const Booklist = ({ id, title, deleteBtn, editStatusBtn, tags, addTagsBtn, renderTags }) => {
+  // const [tagList, setTagList] = useState([]);
+  // const [inputValuesTags, setInputValuesTags] = useState([]);
 
-  const inputHandlerTags = (event) => {
-    const { value, id } = event.target;
+  // const inputHandlerTags = (event) => {
+  //   const { value, id } = event.target;
 
-    setInputValues(value, id);
-  };
+  //   setInputValues(value, id);
+  // };
 
   // const renderTags = () => {
   //   return tagList.map((val) => {
@@ -31,18 +31,18 @@ const Booklist = ({ Book_Id, title, deleteBtn, editStatusBtn, tags, addTagsBtn, 
   //   }
   // };
 
-  const addTags = async (Book_Id) => {
-    try {
-      console.log(Book_Id);
-      const newTagsBook = {
-        Book_id: selectedBookId,
-        Tag_id: selectedTagsId,
-      };
-      const res = await axiosInstance.post(`/connection/${Book_Id}`, newTagsBook);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const addTags = async (Book_Id) => {
+  //   try {
+  //     console.log(Book_Id);
+  //     const newTagsBook = {
+  //       Book_id: selectedBookId,
+  //       Tag_id: selectedTagsId,
+  //     };
+  //     const res = await axiosInstance.post(`/connection/${Book_Id}`, newTagsBook);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
   // useEffect(() => {
   //   fetchTags();
@@ -50,7 +50,7 @@ const Booklist = ({ Book_Id, title, deleteBtn, editStatusBtn, tags, addTagsBtn, 
   return (
     <Tbody>
       <Tr alignItems="center">
-        <Td>{Book_Id}</Td>
+        <Td>{id}</Td>
         <Td>{title}</Td>
         <Td>{tags}</Td>
         <Td>
@@ -61,11 +61,9 @@ const Booklist = ({ Book_Id, title, deleteBtn, editStatusBtn, tags, addTagsBtn, 
             <MenuList closeOnSelect={false}>
               <MenuOptionGroup type="checkbox">
                 {renderTags}
-                <MenuItemOption closeOnSelect={true}>
-                  <Button colorScheme="blue" onClick={() => addTagsBtn()}>
-                    submit
-                  </Button>{' '}
-                </MenuItemOption>
+                <Button colorScheme="blue" onClick={() => addTagsBtn()}>
+                  submit
+                </Button>{' '}
               </MenuOptionGroup>
             </MenuList>
           </Menu>

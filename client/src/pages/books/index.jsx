@@ -1,13 +1,15 @@
-import { Button, HStack, Input, Stack, Table, Thead, Tr, Th, TableCaption, TableContainer } from '@chakra-ui/react';
+import { Button, HStack, Input, Stack, Table, Thead, Tr, Th, TableCaption, TableContainer, CheckboxGroup, Checkbox, Center } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import Booklist from '../../component/BookList';
+import Taglist from '../../component/Taglist';
 import axiosInstance from '../../lib/api';
 
 const books = () => {
   const [booklist, setBooklist] = useState([]);
   const [inputValue, setInputValue] = useState('');
+  const [tagList, setTagList] = useState([]);
 
-  const fetchPost = async () => {
+  const fetchBooks = async () => {
     try {
       const res = await axiosInstance.get('/books');
       setBooklist(res.data.result);
@@ -20,8 +22,8 @@ const books = () => {
   const deleteListBtn = async (id) => {
     try {
       console.log(id);
-      const res = await axiosInstance.delete(`/${id}`);
-      setBooklist(res.data.result);
+      const res = await axiosInstance.delete(`/books/${id}`);
+      fetchBooks();
     } catch (err) {
       console.log(err);
     }
@@ -44,6 +46,7 @@ const books = () => {
           editStatusBtn={() => {
             editStatusHandler(val.id);
           }}
+          renderTags
         />
       );
     });
@@ -58,11 +61,12 @@ const books = () => {
   const createBtn = async () => {
     try {
       const newData = {
-        action: inputValue,
+        book_title: inputValue,
       };
-      console.log(newData);
-      const res = await axiosInstance.post(`/`, newData);
-      setBooklist(res.data.result);
+
+      const addTags = {};
+      const res = await axiosInstance.post(`/books`, newData);
+      fetchBooks();
     } catch (error) {
       console.log(error);
     }
@@ -75,26 +79,41 @@ const books = () => {
     });
 
     console.log(dataToFind);
-    const newStatus = {
-      status: !dataToFind.status,
+    let selectedTags = [];
+    const addTags = {
+      Tags_id: id,
     };
 
-    const res = await axiosInstance.patch(`/${id}`, newStatus);
+    selectedTags.push(addTags);
+
+    const res = await axiosInstance.patch(`/${id}`, selectedTags);
     setBooklist(res.data.result);
   };
 
+  const renderTags = () => {
+    return tagList.map((val) => {
+      return (
+        <MenuItemOption onChange={inputHandlerTags} closeOnSelect={false} value={val.id}>
+          {val.tags_name}
+        </MenuItemOption>
+      );
+    });
+  };
+
+  const fetchTags = async () => {
+    try {
+      const res = await axiosInstance.get('/tags');
+      setTagList(res.data.result);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    fetchPost();
+    fetchBooks(), fetchTags();
   }, []);
   return (
-    <Stack mt={4} alignItems="center">
-      <HStack width="lg">
-        <Input name="action" onChange={inputHandler} placeholder="input your activity" />
-        <Button width="xm" onClick={() => createBtn()}>
-          Create
-        </Button>
-      </HStack>
-
+    <Stack mt={4} alignItems="center" spacing={6}>
       <TableContainer>
         <Table>
           <TableCaption fontSize="lg" fontWeight="bold" placement="top">
@@ -111,6 +130,13 @@ const books = () => {
           {renderList()}
         </Table>
       </TableContainer>
+
+      <HStack width="lg">
+        <Input name="book_title" onChange={inputHandler} placeholder="input new book" />
+        <Button width="xm" onClick={() => createBtn()}>
+          Create
+        </Button>
+      </HStack>
     </Stack>
   );
 };

@@ -18,10 +18,10 @@ app.get('/', (req, res) => {
   res.send('<h1>Buku API</h1>');
 });
 
-const { bookRoutes, tagsRoutes, connetionRoutes } = require('./routes');
+const { bookRoutes, tagsRoutes, connectionRoutes } = require('./routes');
 app.use('/books', bookRoutes);
 app.use('/tags', tagsRoutes);
-app.use('/connection', connetionRoutes);
+app.use('/connection', connectionRoutes);
 
 app.listen(PORT, () => {
   console.log('running, Listening in port', PORT);

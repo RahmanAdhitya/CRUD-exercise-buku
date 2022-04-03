@@ -54,6 +54,38 @@ const bookControllers = {
       });
     }
   },
+  deleteBookById: async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      await Book.destroy({ where: { id: id } });
+      res.status(200).json({
+        message: 'book deleted',
+        result: Book,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: 'server error',
+      });
+    }
+  },
+  editBookById: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { book_title } = req.body;
+
+      await Book.update({ book_title: book_title }, { where: { id: id } });
+      res.status(200).json({
+        message: 'book deleted',
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: 'server error',
+      });
+    }
+  },
 };
 
 module.exports = bookControllers;

@@ -34,6 +34,19 @@ const connectionController = {
       });
     }
   },
+  editConnectionById: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { Tags_id } = req.body;
+      console.log(id);
+      await Book.update({ Tags_id: Tags_id }, { where: { id: id } });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: 'server error',
+      });
+    }
+  },
 };
 
 module.exports = connectionController;

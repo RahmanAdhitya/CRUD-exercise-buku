@@ -3,50 +3,6 @@ import React, { useEffect, useState } from 'react';
 import axiosInstance from '../lib/api';
 
 const Booklist = ({ id, title, deleteBtn, editStatusBtn, tags, addTagsBtn, renderTags }) => {
-  // const [tagList, setTagList] = useState([]);
-  // const [inputValuesTags, setInputValuesTags] = useState([]);
-
-  // const inputHandlerTags = (event) => {
-  //   const { value, id } = event.target;
-
-  //   setInputValues(value, id);
-  // };
-
-  // const renderTags = () => {
-  //   return tagList.map((val) => {
-  //     return (
-  //       <MenuItemOption onChange={inputHandlerTags} closeOnSelect={false} value={val.id}>
-  //         {val.tags_name}
-  //       </MenuItemOption>
-  //     );
-  //   });
-  // };
-
-  // const fetchTags = async () => {
-  //   try {
-  //     const res = await axiosInstance.get('/tags');
-  //     setTagList(res.data.result);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  // const addTags = async (Book_Id) => {
-  //   try {
-  //     console.log(Book_Id);
-  //     const newTagsBook = {
-  //       Book_id: selectedBookId,
-  //       Tag_id: selectedTagsId,
-  //     };
-  //     const res = await axiosInstance.post(`/connection/${Book_Id}`, newTagsBook);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchTags();
-  // }, []);
   return (
     <Tbody>
       <Tr alignItems="center">

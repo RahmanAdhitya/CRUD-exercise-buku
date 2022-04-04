@@ -1,4 +1,4 @@
-const { Tags } = require('../lib/sequelize');
+const { Tags, Book } = require('../lib/sequelize');
 
 const tagsController = {
   createNewTags: async (req, res) => {
@@ -23,7 +23,7 @@ const tagsController = {
   },
   getAllTags: async (req, res) => {
     try {
-      const listTags = await Tags.findAll();
+      const listTags = await Tags.findAll({ include: Book });
 
       res.status(200).json({
         message: 'get all tags succsess',

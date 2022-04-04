@@ -23,6 +23,7 @@ const bookControllers = {
   getAllBook: async (req, res) => {
     try {
       const allBook = await Book.findAll({ include: Tags });
+      // console.log(allBook);
       res.status(200).json({
         message: 'get all Books succsess',
         result: allBook,

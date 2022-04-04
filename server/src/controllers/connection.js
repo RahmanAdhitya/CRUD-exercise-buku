@@ -3,10 +3,10 @@ const { Connection, Tags } = require('../lib/sequelize');
 const connectionController = {
   creatNewConnection: async (req, res) => {
     try {
-      const { Book_id, Tag_id } = req.body;
+      const { BookId, TagId } = req.body;
       const newConnection = await Connection.create({
-        Book_id,
-        Tag_id,
+        BookId,
+        TagId,
       });
       res.status(201).json({
         message: 'connection created',
@@ -34,12 +34,11 @@ const connectionController = {
       });
     }
   },
-  editConnectionById: async (req, res) => {
+  createConnectionById: async (req, res) => {
     try {
-      const { id } = req.params;
-      const { Tags_id } = req.body;
-      console.log(id);
-      await Book.update({ Tags_id: Tags_id }, { where: { id: id } });
+      const { BookId } = req.params;
+      const { TagId } = req.body;
+      await Connection.create({ BookId, TagId });
     } catch (err) {
       console.log(err);
       res.status(500).json({

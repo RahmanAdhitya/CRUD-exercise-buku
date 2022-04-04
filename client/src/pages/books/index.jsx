@@ -1,4 +1,4 @@
-import { Button, HStack, Input, Stack, Table, Thead, Tr, Th, TableCaption, TableContainer, CheckboxGroup, Checkbox, Center, MenuItemOption } from '@chakra-ui/react';
+import { Button, HStack, Input, Stack, Table, Thead, Tr, Th, TableCaption, TableContainer, CheckboxGroup, Checkbox, Center, MenuItemOption, useEventListenerMap } from '@chakra-ui/react';
 import React, { useState, useEffect } from 'react';
 import Booklist from '../../component/BookList';
 import Taglist from '../../component/Taglist';
@@ -62,7 +62,7 @@ const books = () => {
           }}
           renderTags={renderTags()}
           addTagsBtn={() => {
-            addTags(val.id, val.Tags);
+            addTags(val.id, tags.id);
           }}
         />
       );
@@ -107,11 +107,11 @@ const books = () => {
   };
 
   const renderTags = () => {
-    return tagList.map((val) => {
+    return tagList.map((tags) => {
       // console.log(val.id);
       return (
-        <MenuItemOption name={val.id} id={val.id} value={formik.values.Tags_id} onChange={formik.handleChange} closeOnSelect={false}>
-          {val.tags_name}
+        <MenuItemOption name={tags.id} id={tags.id} value={tags.id} onChange={() => inputHandlerTags()} closeOnSelect={false}>
+          {tags.tags_name}
         </MenuItemOption>
       );
     });
@@ -126,21 +126,28 @@ const books = () => {
     }
   };
 
-  // const inputHandlerTags = (event) => {
-  //   const id = event.target.value;
-  //   setInputValueTags(id);
-  // };
+  const inputHandlerTags = (event) => {
+    const isChechked = event.target.Checked;
 
-  const addTags = async (Book_id) => {
+    const checkedValue = event.target.value;
+
+    let result = [];
+
+    if (isChechked) {
+      result.push(checkedValue);
+    }
+    setInputValueTags(result);
+  };
+
+  const addTags = async (BookId) => {
     try {
-      console.log(Book_id);
+      console.log(BookId);
       const newTagsBook = {
-        Book_id: Book_id,
-        Tag_id: inputValueTags,
+        BookId,
+        TagsId: inputValueTags,
       };
 
-      console.log(newTagsBook);
-      const res = await axiosInstance.post(`/connection/${Book_id}`, newTagsBook);
+      const res = await axiosInstance.post(`/connection/${BookId}`, newTagsBook);
     } catch (err) {
       console.log(err);
     }

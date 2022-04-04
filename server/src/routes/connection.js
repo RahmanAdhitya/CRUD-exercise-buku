@@ -3,6 +3,6 @@ const { connectionController } = require('../controllers');
 
 router.post('/', connectionController.creatNewConnection);
 router.get('/', connectionController.getAllConnection);
-router.patch('/:id', connectionController.editConnectionById);
+router.post('/:BookId', connectionController.createConnectionById);
 
 module.exports = router;
